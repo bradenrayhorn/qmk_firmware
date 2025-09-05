@@ -25,16 +25,6 @@ enum layers{
     NUMPAD
 };
 
-// Tap dance declarations
-enum {
-    TD_ESC_BACKTICK,
-};
-
-qk_tap_dance_action_t tap_dance_actions[] = {
-	[TD_ESC_BACKTICK] = ACTION_TAP_DANCE_DOUBLE(KC_ESC, KC_GRV),
-};
-
-
 // Keymap
 
 #define KC_TASK LGUI(KC_TAB)
@@ -91,10 +81,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 			for (uint8_t col = 0; col < MATRIX_COLS; ++col) {
 				uint8_t index = g_led_config.matrix_co[row][col];
 				//if (index <= led_min || index > led_max || index == NO_LED){
-					//continue;	
+					//continue;
 				//}
 				uint16_t keycode = keymap_key_to_keycode(layer, (keypos_t){col,row});
-				
+
 				switch(keycode) {
 					case KC_P0:
 					case KC_P1:
