@@ -104,7 +104,17 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     	return false;
 }
 
+static bool gui_tab_pressed = false;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (keycode == KC_TAB && record->event.pressed && (get_mods() & MOD_MASK_GUI)) {
+        gui_tab_pressed = true;
+    }
+
+    if (!record->event.pressed && (keycode == KC_LGUI || keycode == KC_RGUI)) {
+        gui_tab_pressed = false;
+    }
+
     switch (keycode) {
         case B_TESC:
             if (record->event.pressed) {
@@ -116,8 +126,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     tap_code(KC_GRV);
                     register_mods(shift_mod);
                 } else if (mods & MOD_MASK_GUI) {
-                    // can just press backtick key normally
-                    tap_code(KC_GRV);
+                    // If we're in the CMD+TAB switcher, use ESC key
+                    if (gui_tab_pressed) {
+                        tap_code(KC_ESC);
+                    } else {
+                        // Otherwise, just a normal backtick key
+                        tap_code(KC_GRV);
+                    }
                 } else {
                     tap_code(KC_ESC);
                 }
